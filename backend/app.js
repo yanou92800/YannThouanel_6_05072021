@@ -1,5 +1,6 @@
 const express = require('express'); // importer package express
 const mongoose = require('mongoose'); // importer package mongoose
+const path = require('path');
 
 const stuffRoutes = require('./routes/stuff'); // enregistre routeur importer et importer stuff
 
@@ -28,5 +29,6 @@ app.use(express.json());
 // appliquer routeur
 app.use('/api/stuff', stuffRoutes);
 app.use('/api/auth', userRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
