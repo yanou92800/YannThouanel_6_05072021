@@ -20,6 +20,14 @@ exports.createThing = (req, res, next) => { // route et le middleware
         ...JSON.parse(req.body.thing),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // S'il existe on traite l'image
       } : { ...req.body };
+      if (req.file) { // Si un nouveau fichier est affecté alors tu rentres dans le code ci-dessous
+        Thing.findOne({ _id: req.params.id }) // on recupere le thing concerné (ce qui nous retourne une promesse)
+        .then(thing => { // on lui dit que dans ce thing il va appliquer le code suivant
+            const filename = thing.imageUrl.split('images/')[1]; // on va chercher l'ancienne image et on la met dans un variable 'filename'
+            fs.unlink(`images/${filename}`, (error => {if (error) console.log(error)}))// on lui dit de unlink (supprimer) l'image selectionnée plus haut dans la variable filename
+        })
+        .catch(error => res.status(500).json({ error }));
+    }
     Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
       .then(() => res.status(200).json({ message: 'Objet modifié !'}))
       .catch(error => res.status(400).json({ error }));
