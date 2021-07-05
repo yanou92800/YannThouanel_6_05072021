@@ -7,7 +7,9 @@ exports.createThing = (req, res, next) => { // route et le middleware
     delete thingObject._id; // Suppression en amont du faux_id envoyé par le front-end
     const thing = new Thing({ // Instance (new) du modèle Thing en passant un objet JavaScript contenant toutes les informations requises du corps de requête analysé
       ...thingObject, // Opérateur spread ... utilisé pour faire une copie de tous les éléments de req.body
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+      likes: 0, // initialiser à zéro
+      dislikes: 0
     });
     thing.save() // enregistrer objet Thing dans la base de données
       .then(() => res.status(201).json({ message: 'Objet enregistré !'})) // Renvoie une promesse (réussie)
