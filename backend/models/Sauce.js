@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const thingSchema = mongoose.Schema({ // Schéma de données
+const sauceSchema = mongoose.Schema({ // Schéma de données
     title: { type: String, required: true },
     description: { type: String, required: true },
     imageUrl: { type: String, required: true },
@@ -8,4 +8,4 @@ const thingSchema = mongoose.Schema({ // Schéma de données
     price: { type: Number, required: true },
 });
 
-module.exports = mongoose.model('Thing', thingSchema); // Exporter schéma en tant que modèle Mongoose appelé Thing
+module.exports = mongoose.model('Sauce', sauceSchema); // Exporter schéma en tant que modèle Mongoose appelé Sauce

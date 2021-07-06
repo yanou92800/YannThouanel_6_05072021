@@ -2,7 +2,7 @@ const express = require('express'); // importer package express
 const mongoose = require('mongoose'); // importer package mongoose
 const path = require('path');
 
-const stuffRoutes = require('./routes/stuff'); // enregistre routeur importer et importer stuff
+const saucesRoutes = require('./routes/sauces'); // enregistre routeur importer et importer sauces
 
 const userRoutes = require('./routes/user');
 
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // appliquer routeur
-app.use('/api/stuff', stuffRoutes);
+app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
