@@ -1,6 +1,8 @@
-const Sauce = require('../models/Sauce');
+// Logique métier pour sauce
 
-const fs = require('fs'); 
+const Sauce = require('../models/Sauce'); // importe le schema Sauce
+
+const fs = require('fs'); //permet de modifier le système de fichiers
 
 exports.createSauce = (req, res, next) => { // route et le middleware
     const sauceObject = JSON.parse(req.body.sauce);
