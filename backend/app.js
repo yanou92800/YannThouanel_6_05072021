@@ -1,12 +1,22 @@
 const express = require('express'); // importer package express
 const mongoose = require('mongoose'); // importer package mongoose
-const path = require('path');
+const path = require('path'); //donne accès au chemin de notre système de fichier
+const rateLimit = require('express-rate-limit'); //limite les requêtes par IP
+const helmet = require('helmet'); //définit divers en-têtes HTTP sécurisées
+const mongoSanitize = require('express-mongo-sanitize'); //protège des attaques par injection NoSQL(MongoDB)
+
+//100 requêtes toutes les 15min par IP
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100
+});
 
 const saucesRoutes = require('./routes/sauces'); // enregistre routeur importer et importer sauces
 
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://yanou92:GRWdazwwN1n46F83@cluster0.6qmxj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+// connexion à bdd MongoDB via mongoose
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.6qmxj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -25,6 +35,10 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+app.use('/api', apiLimiter); // limiteur de requêtes s'applique seulement aux requêtes commençant par API (=ne concerne pas les express.static)
+app.use(helmet());
+app.use(mongoSanitize());
 
 // appliquer routeur
 app.use('/api/sauces', saucesRoutes);

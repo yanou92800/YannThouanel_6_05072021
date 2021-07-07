@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+// Schéma de données d'une sauce
+
+const mongoose = require('mongoose'); // import mongoose
 
 const sauceSchema = mongoose.Schema({ // Schéma de données
     userId: { type: String, require: true },
