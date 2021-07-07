@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express'); // importer package express
 const mongoose = require('mongoose'); // importer package mongoose
 const path = require('path'); //donne accès au chemin de notre système de fichier
@@ -16,7 +17,7 @@ const saucesRoutes = require('./routes/sauces'); // enregistre routeur importer 
 const userRoutes = require('./routes/user');
 
 // connexion à bdd MongoDB via mongoose
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.6qmxj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+mongoose.connect(`${process.env.DB_URL}`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
