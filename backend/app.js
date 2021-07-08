@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express'); // importer package express
 const mongoose = require('mongoose'); // importer package mongoose
 const path = require('path'); //donne accès au chemin de notre système de fichier
+const xss = require('xss-clean'); // Désinfecte le HTML non fiable (pour empêcher XSS) avec une configuration spécifiée par une liste blanche.
+const hpp = require('hpp'); // Protège contre les attaques de pollution des paramètres HTTP
 const rateLimit = require('express-rate-limit'); //limite les requêtes par IP
 const helmet = require('helmet'); //définit divers en-têtes HTTP sécurisées
 const mongoSanitize = require('express-mongo-sanitize'); //protège des attaques par injection NoSQL(MongoDB)
@@ -38,6 +40,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use('/api', apiLimiter); // limiteur de requêtes s'applique seulement aux requêtes commençant par API (=ne concerne pas les express.static)
+app.use(xss());
+app.use(hpp());
 app.use(helmet());
 app.use(mongoSanitize());
 

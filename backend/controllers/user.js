@@ -15,7 +15,7 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10) // fonction hasher/crypter un mdp, 10 tours pour créer un mdp safe (pas trop de salt)
       .then(hash => { 
         const user = new User({
-          email: cryptojs.hmac-sha512(req.body.email, `${process.env.TOKEN}`).toString(),
+          email: cryptojs.HmacSHA512(req.body.email, `${process.env.MAIL_SECRET_KEY}`).toString(),
           password: hash
         });
         user.save()
@@ -27,7 +27,7 @@ exports.signup = (req, res, next) => {
 
 // fonction pour se connecter
 exports.login = (req, res, next) => {
-User.findOne({ email: cryptojs.hmac-sha512(req.body.email, `${process.env.TOKEN}`).toString() })
+User.findOne({ email: cryptojs.HmacSHA512(req.body.email, `${process.env.MAIL_SECRET_KEY}`).toString() })
     .then(user => { //recherche l'utilisateur correspondant
     if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' });
